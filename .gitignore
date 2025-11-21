@@ -1,0 +1,78 @@
+# Problematic files
+).
+
+# Python
+# Virtual Environment
+backend/venv/
+backend/env/
+backend/.venv/
+venv/
+env/
+.venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+/media
+/staticfiles
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Node.js (Frontend)
+frontend/node_modules/
+frontend/.pnp
+frontend/.pnp.js
+frontend/coverage/
+frontend/build/
+frontend/dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Misc
+*.bak
+*.tmp
+.cache/

@@ -1,0 +1,708 @@
+{
+	"info": {
+		"_postman_id": "food-ordering-api-collection",
+		"name": "Food Ordering API",
+		"description": "Complete API collection for Food Ordering Application with RBAC and Country-based filtering",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login (Get JWT Tokens)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"nick_fury\",\n    \"password\": \"your_password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/token/",
+							"host": ["{{base_url}}"],
+							"path": ["token", ""]
+						},
+						"description": "Login and get JWT access and refresh tokens"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Access Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"{{refresh_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/token/refresh/",
+							"host": ["{{base_url}}"],
+							"path": ["token", "refresh", ""]
+						},
+						"description": "Refresh access token using refresh token"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"{{access_token}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/token/verify/",
+							"host": ["{{base_url}}"],
+							"path": ["token", "verify", ""]
+						},
+						"description": "Verify if access token is valid"
+					},
+					"response": []
+				}
+			],
+			"description": "JWT Authentication endpoints"
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"newuser\",\n    \"email\": \"newuser@example.com\",\n    \"password\": \"SecurePass123!\",\n    \"password2\": \"SecurePass123!\",\n    \"first_name\": \"New\",\n    \"last_name\": \"User\",\n    \"country\": \"INDIA\",\n    \"phone\": \"+91-1234567890\",\n    \"role\": \"member\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/register/",
+							"host": ["{{base_url}}"],
+							"path": ["users", "register", ""]
+						},
+						"description": "Register a new user. Role defaults to 'member' if not specified."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/me/",
+							"host": ["{{base_url}}"],
+							"path": ["users", "me", ""]
+						},
+						"description": "Get current authenticated user details"
+					},
+					"response": []
+				},
+				{
+					"name": "List Users (Admin Only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/",
+							"host": ["{{base_url}}"],
+							"path": ["users", ""]
+						},
+						"description": "List all users (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/1/",
+							"host": ["{{base_url}}"],
+							"path": ["users", "1", ""]
+						},
+						"description": "Get user details by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Updated\",\n    \"last_name\": \"Name\",\n    \"phone\": \"+91-9876543210\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/me/",
+							"host": ["{{base_url}}"],
+							"path": ["users", "me", ""]
+						},
+						"description": "Update current user profile"
+					},
+					"response": []
+				}
+			],
+			"description": "User management endpoints"
+		},
+		{
+			"name": "Restaurants",
+			"item": [
+				{
+					"name": "List Restaurants",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/restaurants/?country=INDIA",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", ""],
+							"query": [
+								{
+									"key": "country",
+									"value": "INDIA",
+									"description": "Filter by country (INDIA or AMERICA). Non-admins see only their country."
+								}
+							]
+						},
+						"description": "List all restaurants. Non-admins see only restaurants from their country."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Restaurant Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/restaurants/1/",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", "1", ""]
+						},
+						"description": "Get detailed information about a specific restaurant"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Restaurant Menu",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/restaurants/1/menu/",
+							"host": ["{{base_url}}"],
+							"path": ["restaurants", "1", "menu", ""]
+						},
+						"description": "Get menu items for a specific restaurant, grouped by categories"
+					},
+					"response": []
+				}
+			],
+			"description": "Restaurant endpoints"
+		},
+		{
+			"name": "Menu Items",
+			"item": [
+				{
+					"name": "List Menu Items",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/menu-items/?restaurant=1",
+							"host": ["{{base_url}}"],
+							"path": ["menu-items", ""],
+							"query": [
+								{
+									"key": "restaurant",
+									"value": "1",
+									"description": "Filter by restaurant ID"
+								},
+								{
+									"key": "category",
+									"value": "1",
+									"description": "Filter by category ID"
+								},
+								{
+									"key": "vegetarian",
+									"value": "true",
+									"description": "Filter vegetarian items"
+								}
+							]
+						},
+						"description": "List menu items with optional filters"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Menu Item Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/menu-items/1/",
+							"host": ["{{base_url}}"],
+							"path": ["menu-items", "1", ""]
+						},
+						"description": "Get details of a specific menu item"
+					},
+					"response": []
+				}
+			],
+			"description": "Menu item endpoints"
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "List All Orders (Admin Only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/orders/?status=PENDING&country=INDIA",
+							"host": ["{{base_url}}"],
+							"path": ["orders", ""],
+							"query": [
+								{
+									"key": "status",
+									"value": "PENDING",
+									"description": "Filter by status (PENDING, CONFIRMED, PREPARING, OUT_FOR_DELIVERY, DELIVERED, CANCELLED)"
+								},
+								{
+									"key": "country",
+									"value": "INDIA",
+									"description": "Filter by country"
+								},
+								{
+									"key": "restaurant",
+									"value": "1",
+									"description": "Filter by restaurant ID"
+								}
+							]
+						},
+						"description": "List all orders (Admin only). Non-admins should use 'My Orders' endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/orders/my_orders/",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "my_orders", ""]
+						},
+						"description": "Get current user's orders"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Order Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/orders/1/",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "1", ""]
+						},
+						"description": "Get detailed information about a specific order"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Order (Place Order)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"restaurant\": 1,\n    \"country\": \"INDIA\",\n    \"delivery_address\": \"123 Main Street, Mumbai, India\",\n    \"payment_method\": 1,\n    \"special_instructions\": \"Please deliver quickly\",\n    \"items\": [\n        {\n            \"menu_item\": 1,\n            \"quantity\": 2,\n            \"special_instructions\": \"Extra spicy\"\n        },\n        {\n            \"menu_item\": 2,\n            \"quantity\": 1\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/",
+							"host": ["{{base_url}}"],
+							"path": ["orders", ""]
+						},
+						"description": "Create and place an order (checkout). Only Admin and Manager can place orders. Members can add items to cart but cannot checkout."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/orders/1/cancel/",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "1", "cancel", ""]
+						},
+						"description": "Cancel an order. Only Admin and Manager can cancel orders. Members cannot cancel orders."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Status",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"CONFIRMED\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/orders/1/update_status/",
+							"host": ["{{base_url}}"],
+							"path": ["orders", "1", "update_status", ""]
+						},
+						"description": "Update order status. Valid statuses: PENDING, CONFIRMED, PREPARING, OUT_FOR_DELIVERY, DELIVERED, CANCELLED. Only Admin and Manager can update status."
+					},
+					"response": []
+				}
+			],
+			"description": "Order management endpoints"
+		},
+		{
+			"name": "Payment Methods",
+			"item": [
+				{
+					"name": "Get My Payment Methods",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payment-methods/my_payment_methods/",
+							"host": ["{{base_url}}"],
+							"path": ["payment-methods", "my_payment_methods", ""]
+						},
+						"description": "Get current user's payment methods"
+					},
+					"response": []
+				},
+				{
+					"name": "List All Payment Methods (Admin Only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payment-methods/",
+							"host": ["{{base_url}}"],
+							"path": ["payment-methods", ""]
+						},
+						"description": "List all payment methods (Admin only)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Payment Method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payment_type\": \"CASH_ON_DELIVERY\",\n    \"is_default\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/payment-methods/",
+							"host": ["{{base_url}}"],
+							"path": ["payment-methods", ""]
+						},
+						"description": "Create a new payment method. Payment types: CREDIT_CARD, DEBIT_CARD, NET_BANKING, UPI, WALLET, CASH_ON_DELIVERY. For cards, include card_last4 and card_brand. For UPI, include upi_id."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Credit Card Payment Method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payment_type\": \"CREDIT_CARD\",\n    \"card_last4\": \"1234\",\n    \"card_brand\": \"Visa\",\n    \"is_default\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/payment-methods/",
+							"host": ["{{base_url}}"],
+							"path": ["payment-methods", ""]
+						},
+						"description": "Create a credit card payment method"
+					},
+					"response": []
+				},
+				{
+					"name": "Create UPI Payment Method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"payment_type\": \"UPI\",\n    \"upi_id\": \"user@paytm\",\n    \"is_default\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/payment-methods/",
+							"host": ["{{base_url}}"],
+							"path": ["payment-methods", ""]
+						},
+						"description": "Create a UPI payment method"
+					},
+					"response": []
+				},
+				{
+					"name": "Set Default Payment Method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payment-methods/1/set_default/",
+							"host": ["{{base_url}}"],
+							"path": ["payment-methods", "1", "set_default", ""]
+						},
+						"description": "Set a payment method as default for the user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment Method Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payment-methods/1/",
+							"host": ["{{base_url}}"],
+							"path": ["payment-methods", "1", ""]
+						},
+						"description": "Get details of a specific payment method"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Payment Method (Admin Only)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_default\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/payment-methods/1/",
+							"host": ["{{base_url}}"],
+							"path": ["payment-methods", "1", ""]
+						},
+						"description": "Update payment method. Only Admin can update payment methods."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Payment Method",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/payment-methods/1/",
+							"host": ["{{base_url}}"],
+							"path": ["payment-methods", "1", ""]
+						},
+						"description": "Delete a payment method. Users can delete their own payment methods."
+					},
+					"response": []
+				}
+			],
+			"description": "Payment method management endpoints"
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
