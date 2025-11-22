@@ -2,8 +2,49 @@
 
 A full-stack web-based food ordering application with role-based access control (RBAC) and country-based data filtering. Built with Django REST Framework and React.
 
+## Quick Start
+
+### Prerequisites
+- Python 3.11+
+- Node.js 16+ and npm
+- Git
+
+### Local Setup
+
+1. **Clone the repository:**ash
+   git clone https://github.com/nikhil7953/food-ordering-app.git
+   cd food-ordering-app
+   2. **Backend Setup:**
+ 
+   cd backend
+   python -m venv venv
+   venv\Scripts\activate  # Windows
+   # or source venv/bin/activate  # Mac/Linux
+   pip install -r requirements.txt
+   python manage.py migrate
+   python manage.py populate_data
+   3. **Frontend Setup:**
+   cd frontend
+   npm install
+   4. **Run the application:**
+   
+   # Terminal 1 - Backend (from backend directory)
+   python manage.py runserver
+   
+   # Terminal 2 - Frontend (from frontend directory)
+   npm start
+   5. **Access the application:**
+   - Frontend: http://localhost:3000
+   - Backend API: http://127.0.0.1:8000/api
+   - Django Admin: http://127.0.0.1:8000/admin
+
+**Test Users:** See [Test Users](#test-users) section for login credentials.
+
+---
+
 ## Table of Contents
 
+- [Quick Start](#quick-start)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Prerequisites](#prerequisites)
@@ -82,8 +123,8 @@ Before you begin, ensure you have the following installed:
 ## Installation
 
 ### 1. Clone the Repository
-h
-git clone <your-repository-url>
+
+git clone https://github.com/nikhil7953/food-ordering-app.git
 cd food-ordering-app### 2. Backend Setup
 h
 # Navigate to backend directory
@@ -96,7 +137,7 @@ python -m venv venv
 venv\Scripts\activate
 
 # Activate virtual environment (Mac/Linux)
-source venv/bin/activate
+# source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -187,9 +228,8 @@ The application requires the following test users to be created. You can create 
 | `travis` | Member | America | (set your own) |
 
 ### Create Users via Django Shell
-hon
+thon
 python manage.py shell
-
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -246,61 +286,13 @@ User.objects.create_user(
 )---
 
 ## Project Structure
-
-##    
-Project Structure 
-
-├── backend/ # Django backend
-│ ├── food_ordering/ # Django project settings
-│ │ ├── settings.py
-│ │ ├── urls.py
-│ │ └── wsgi.py
-│ ├── users/ # User management app
-│ │ ├── models.py
-│ │ ├── views.py
-│ │ ├── serializers.py
-│ │ ├── permissions.py
-│ │ └── mixins.py
-│ ├── restaurants/ # Restaurant & menu app
-│ │ ├── models.py
-│ │ ├── views.py
-│ │ └── serializers.py
-│ ├── orders/ # Order management app
-│ │ ├── models.py
-│ │ ├── views.py
-│ │ └── serializers.py
-│ ├── payments/ # Payment methods app
-│ │ ├── models.py
-│ │ ├── views.py
-│ │ └── serializers.py
-│ ├── manage.py
-│ └── requirements.txt
-├── frontend/ # React frontend
-│ ├── public/
-│ ├── src/
-│ │ ├── components/ # Reusable components (Navbar)
-│ │ ├── contexts/ # React contexts (AuthContext, CartContext)
-│ │ ├── pages/ # Page components (Login, Home, Cart, etc.)
-│ │ ├── services/ # API service layer (api.js)
-│ │ └── App.js
-│ └── package.json
-├── docs/ # Documentation
-│ └── API_Collection/ # Postman collection
-│ └── Food_Ordering_API.postman_collection.json
-└── README.md
-
-
-
-
-## API Endpoints
-
-### Authentication
-- `POST /api/token/` - Login (get JWT tokens)
-- `POST /api/token/refresh/` - Refresh access token
-- `POST /api/token/verify/` - Verify token
-
-### Users
-- `POST /api/users/register/` - Register new user
+   cd backend
+   python -m venv venv
+   venv\Scripts\activate  # Windows
+   # or source venv/bin/activate  # Mac/Linux
+   pip install -r requirements.txt
+   python manage.py migrate
+   python manage.py populate_dataegister/` - Register new user
 - `GET /api/users/me/` - Get current user profile
 - `PATCH /api/users/me/` - Update current user profile
 - `GET /api/users/` - List all users (Admin only)
@@ -332,6 +324,8 @@ Project Structure
 
 **Note:** For detailed API documentation with example requests, see the Postman collection in `docs/API_Collection/Food_Ordering_API.postman_collection.json`.
 
+---
+
 ## Role-Based Access Control (RBAC)
 
 ### Admin Role
@@ -358,6 +352,8 @@ Project Structure
 - ❌ Cannot cancel orders
 - ❌ Cannot create/update/delete restaurants or menu items
 
+---
+
 ## Country-Based Filtering
 
 The application automatically filters data based on the user's country:
@@ -370,6 +366,8 @@ The application automatically filters data based on the user's country:
   - Members see only their own orders
 
 This filtering is implemented using the `CountryFilterMixin` in the backend, which automatically applies country-based filtering to all ViewSets that inherit from it.
+
+---
 
 ## Architecture
 
@@ -394,6 +392,8 @@ This filtering is implemented using the `CountryFilterMixin` in the backend, whi
 4. Backend validates tokens and applies RBAC permissions
 5. Backend filters data based on user's country using `CountryFilterMixin`
 6. Response sent back to frontend with filtered data
+
+---
 
 ## Testing
 
@@ -429,6 +429,8 @@ Use the provided Postman collection:
    - `refresh_token`: (will be populated after login)
 3. Test all endpoints with different user roles
 
+---
+
 ## Troubleshooting
 
 ### Backend Issues
@@ -443,8 +445,15 @@ Use the provided Postman collection:
 - **API connection failed**: Verify backend is running on `http://localhost:8000`
 - **Token errors**: Clear localStorage and login again
 
+---
+
 ## Additional Resources
 
 - **Postman Collection**: `docs/API_Collection/Food_Ordering_API.postman_collection.json`
 - **Django Admin**: `http://127.0.0.1:8000/admin/`
 - **API Root**: `http://127.0.0.1:8000/api/`
+
+
+   cd frontend
+   npm install-m "docs: Add Quick Start section and fix formatting"
+git push origin main
